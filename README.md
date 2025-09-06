@@ -59,11 +59,14 @@ transaction.sign([senderKeypair]);
 const serializedTx = Buffer.from(transaction.serialize()).toString('base64');
 
 // Send serialized transaction to the gas tank for sponsorship
-// Without private RPC
-const txHash = await aethokitClient.sponsorTx({ transaction: serializedTx });
+// Without private RPC or network specified
+const txHash = await aethokitClient.sponsorTx({ transaction: serializedTx }); // Tx will sent to default network which is devnet with public rpc
+
+// Wit network
+const txHash = await aethokitClient.sponsorTx({ transaction: serializedTx, rpcOrNetwork: "mainnet" });
 
 // With private RPC
-const txHash = await aethokitClient.sponsorTx({ transaction: serializedTx, rpc: "private-rpc-url" });
+const txHash = await aethokitClient.sponsorTx({ transaction: serializedTx, rpcOrNetwork: "private-rpc-url" });
 
 console.log({ txHash });
 ```

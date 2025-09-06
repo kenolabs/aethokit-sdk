@@ -21,7 +21,7 @@ export default class Aethokit {
 	}
 
 	/**
-	 * Retrieve the gas address for the current gas tank
+	 * Retrieve the gas address for the gas tank based off the gas key
 	 * @returns {Promise<string>} resolves with the gas address
 	 */
 	async getGasAddress(): Promise<string> {
@@ -33,12 +33,12 @@ export default class Aethokit {
 	 * Sends a transaction to the gas tank for sponsorship
 	 * @param {Object} transactionData - transaction data object
 	 * @param {string} transactionData.transaction - serialized transaction
-	 * @param {string} transactionData.rpc - optional, RPC endpoint URL to use for submitting the transaction (defaults to public RPC depedning on gas key network)
+	 * @param {string} transactionData.rpcOrNetwork - optional, RPC endpoint URL or network to be used for submitting the transaction (defaults to public RPC on devnet network)
 	 * @returns {Promise<string>} resolves with the transaction hash
 	 */
 	async sponsorTx(transactionData: {
 		transaction: string;
-		rpc?: string;
+		rpcOrNetwork?: string;
 	}): Promise<string> {
 		const { hash } = await this.MakeRequest(
 			"sponsor-tx",
