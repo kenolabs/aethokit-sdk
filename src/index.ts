@@ -1,23 +1,26 @@
 import axios from "axios"
 
 interface initParamsType {
-  gasKey: string
+	gasKey: string;
+	rpcOrNetwork?: string;
 }
 
 export default class Aethokit {
 	private gasKey: string;
+	private rpcOrNetwork?: string;
 
 	/**
 	 * Initialize the Aethokit SDK
-	 * @param {initParamsType} initParams object containing the API key
-	 * @throws {Error} if the API key is not provided
+	 * @param {initParamsType} initParams object containing the GAS KEY and an optional param that takes either an rpc or a network 
+	 * @throws {Error} if the GAS KEY is not provided
 	 */
 	constructor(initParams: initParamsType) {
 		if (!initParams.gasKey) {
-			throw new Error("API Key is required to initialize the SDK");
+			throw new Error("GAS KEY is required to initialize the SDK");
 		}
 
 		this.gasKey = initParams.gasKey;
+		this.rpcOrNetwork = initParams.rpcOrNetwork;
 	}
 
 	/**
@@ -31,19 +34,19 @@ export default class Aethokit {
 
 	/**
 	 * Sends a transaction to the gas tank for sponsorship
-	 * @param {Object} transactionData - transaction data object
-	 * @param {string} transactionData.transaction - serialized transaction
-	 * @param {string} transactionData.rpcOrNetwork - optional, RPC endpoint URL or network to be used for submitting the transaction (defaults to public RPC on devnet network)
+	 * @param {string} transaction - serialized transaction
 	 * @returns {Promise<string>} resolves with the transaction hash
 	 */
-	async sponsorTx(transactionData: {
-		transaction: string;
-		rpcOrNetwork?: string;
-	}): Promise<string> {
+	async sponsorTx(transaction: string): Promise<string> {
+		const data = {
+			transaction,
+			rpcOrNetwork: this.rpcOrNetwork
+		}
+
 		const { hash } = await this.MakeRequest(
 			"sponsor-tx",
 			"POST",
-			transactionData
+			data
 		);
 
 		return hash;

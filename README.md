@@ -13,8 +13,15 @@ Then import the package and initialize it with a gasKey gotten from the aethokit
 ```ts
 import Aethokit from "@kenolabs/aethokit"
 
-// Initalize the SDK
-const aethokitClient = Aethokit({ gasKey });
+// Initalize the SDK 
+// Without RPC or network
+const aethokitClient = Aethokit({ gasKey: "aekt_..." }); // defaults to devnet
+
+// With RPC (RPC can either be a testnet or mainnet RPC url)
+const aethokitClient = Aethokit({ gasKey: "aekt_...", rpcOrNetwork: "private-rpc-url" });
+
+// With network
+const aethokitClient = Aethokit({ gasKey: "aekt_...", rpcOrNetwork: "mainnet" });
 ```
 
 ### USAGE SENDING SOL WITH KEYPAIR
@@ -42,7 +49,7 @@ const fundUserIx = SystemProgram.transfer({
 
 const gasAddress = await aethokitClient.getGasAddress();
 
-const connection = new Connection(ClusterApi("devnet"));
+const connection = new Connection(ClusterApi("devnet")); // or mainnet
 const { blockhash: recentBlockHash } = await connection.getLatestBlockhash("confirmed");
 
 const txMsg = new TransactionMessage({
@@ -59,14 +66,7 @@ transaction.sign([senderKeypair]);
 const serializedTx = Buffer.from(transaction.serialize()).toString('base64');
 
 // Send serialized transaction to the gas tank for sponsorship
-// Without private RPC or network specified
-const txHash = await aethokitClient.sponsorTx({ transaction: serializedTx }); // Tx will sent to default network which is devnet with public rpc
-
-// Wit network
-const txHash = await aethokitClient.sponsorTx({ transaction: serializedTx, rpcOrNetwork: "mainnet" });
-
-// With private RPC
-const txHash = await aethokitClient.sponsorTx({ transaction: serializedTx, rpcOrNetwork: "private-rpc-url" });
+const txHash = await aethokitClient.sponsorTx(serializedTx);
 
 console.log({ txHash });
 ```
@@ -94,7 +94,7 @@ transaction.addSignature(new PublicKey(privySolWallet.address), userSignatureBuf
 const serializedTransaction = Buffer.from(transaction.serialize()).toString('base64');
 
 // Send serialized transaction to the gas tank for sponsorship
-const txHash = await aethokitClient.sponsorTx({ transaction: serializedTransaction });
+const txHash = await aethokitClient.sponsorTx(serializedTransaction);
 
 console.log({ txHash });
 ```
