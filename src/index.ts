@@ -1,6 +1,6 @@
 import axios from "axios"
 
-interface initParamsType {
+export interface initParamsType {
 	gasKey: string;
 	rpcOrNetwork?: string;
 }
