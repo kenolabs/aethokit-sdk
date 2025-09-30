@@ -30,7 +30,7 @@ import {
   SystemProgram,
   TransactionMessage,
   Keypair,
-  ClusterApi,
+  clusterApiUrl,
   PublicKey,
   Connection,
   VersionedTransaction,
@@ -49,7 +49,7 @@ const fundUserIx = SystemProgram.transfer({
 
 const gasAddress = await aethokitClient.getGasAddress();
 
-const connection = new Connection(ClusterApi("devnet")); // or mainnet
+const connection = new Connection(ClusterApiUrl("devnet")); // or mainnet
 const { blockhash: recentBlockHash } = await connection.getLatestBlockhash("confirmed");
 
 const txMsg = new TransactionMessage({

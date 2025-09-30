@@ -1,6 +1,6 @@
 {
 	"name": "@kenolabs/aethokit",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "an SDK that allows you sponsor transactions on the solana network.",
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
