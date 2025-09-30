@@ -1,6 +1,6 @@
 /src
 
-tsconfig
+tsconfig.json
 tsup.config.ts
 
 bun.lock
